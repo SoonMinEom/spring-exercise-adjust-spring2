@@ -165,12 +165,5 @@ public class UserDao {
             throw new RuntimeException(e);
         }
     }
-
-    public static void main(String[] args) {
-        UserDao userDao = new UserDao();
-//        userDao.add();
-        User user = userDao.findById("6");
-        System.out.println(user.getName());
-    }
 }
 ```
