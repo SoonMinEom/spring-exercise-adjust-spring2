@@ -9,6 +9,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -33,13 +35,37 @@ class UserDaoTest {
 
     @Test
     void addAndGet() {
-        UserDao userDao = context.getBean("awsUserDao", UserDao.class);
+        userDao.deleteAll();
+
         userDao.add(user1);
         User user = userDao.findById(user1.getId());
 
-        assertEquals("1111", user.getName());
-        assertEquals("1111", user.getPassword());
+        assertEquals("1111", user1.getName());
+        assertEquals("1111", user1.getPassword());
 
+    }
+
+    @Test
+    void getAll() {
         userDao.deleteAll();
+        List<User> users = userDao.getAll();
+        assertEquals(0, users.size());
+
+        userDao.add(user1);
+        userDao.add(user2);
+        userDao.add(user3);
+
+        users = userDao.getAll();
+        assertEquals(3, users.size());
+    }
+
+    @Test
+    void getCount() {
+        userDao.deleteAll();
+        userDao.add(user1);
+        userDao.add(user2);
+        userDao.add(user3);
+        assertEquals(3,userDao.getCount());
+
     }
 }
