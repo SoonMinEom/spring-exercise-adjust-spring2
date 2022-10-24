@@ -87,13 +87,20 @@ public class UserDao {
     }
 
     public void deleteAll() {
-        jdbcContextWithStatementStrategy(new DeleteAllStrategy());
+
+        //jdbcContextWithStatementStrategy(new DeleteAllStrategy());
+        jdbcContextWithStatementStrategy((new StatementStrategy() {
+            @Override
+            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                return c.prepareStatement("DELETE FROM users");
+            }
+        }));
     }
 
     public static void main(String[] args) {
-//        UserDao userDao = new UserDao();
-//        userDao.add();
-//        User user = userDao.findById("6");
-//        System.out.println(user.getName());
+
+//        UserDaoFactory udf = new UserDaoFactory();
+//        UserDao userDao = udf.awsUserDao();
+//        userDao.add(user);
     }
 }
