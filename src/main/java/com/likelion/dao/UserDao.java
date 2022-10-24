@@ -2,6 +2,7 @@ package com.likelion.dao;
 
 
 import com.likelion.domain.User;
+import org.springframework.test.context.jdbc.Sql;
 
 import javax.sql.DataSource;
 import javax.xml.crypto.Data;
@@ -63,14 +64,7 @@ public class UserDao {
     }
 
     public void deleteAll() {
-
-        //jdbcContextWithStatementStrategy(new DeleteAllStrategy());
-        jdbcContext.workWithStatementStrategy((new StatementStrategy() {
-            @Override
-            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
-                return c.prepareStatement("DELETE FROM users");
-            }
-        }));
+        jdbcContext.executeSql("delete from users");
     }
 
     public static void main(String[] args) {
