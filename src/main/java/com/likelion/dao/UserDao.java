@@ -3,18 +3,17 @@ package com.likelion.dao;
 
 import com.likelion.domain.User;
 
+import javax.sql.DataSource;
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.Map;
 
 public class UserDao {
 
-    private ConnectionMaker cm;
-    public UserDao() {
-        this.cm = new AwsConnectionMaker();
-    }
+    private final DataSource dataSource;
 
-    public UserDao(ConnectionMaker cm) {
-        this.cm = cm;
+    public UserDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public void jdbcContextWithStatementStrategy(StatementStrategy ss) {
@@ -22,7 +21,7 @@ public class UserDao {
         Connection c = null;
         PreparedStatement ps = null;
         try {
-            c = cm.makeConnection();
+            c = dataSource.getConnection();
             ps = ss.makePreparedStatement(c);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -64,7 +63,7 @@ public class UserDao {
         Connection c;
         try {
             // DB접속 (ex sql workbeanch실행)
-            c = cm.makeConnection();
+            c = dataSource.getConnection();
 
             // Query문 작성
             PreparedStatement pstmt = c.prepareStatement("SELECT * FROM users WHERE id = ?");
@@ -92,9 +91,9 @@ public class UserDao {
     }
 
     public static void main(String[] args) {
-        UserDao userDao = new UserDao();
+//        UserDao userDao = new UserDao();
 //        userDao.add();
-        User user = userDao.findById("6");
-        System.out.println(user.getName());
+//        User user = userDao.findById("6");
+//        System.out.println(user.getName());
     }
 }
